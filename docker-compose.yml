@@ -1,0 +1,80 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: directus
+      POSTGRES_USER: directus
+      POSTGRES_PASSWORD: directus
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U directus -d directus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  directus:
+    image: directus/directus:11.14.1
+    ports:
+      - "8055:8055"
+    environment:
+      SECRET: "change-me-directus-secret"
+      DB_CLIENT: "pg"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER: "directus"
+      DB_PASSWORD: "directus"
+
+      # initial admin user (only used on first init)
+      ADMIN_EMAIL: "${DIRECTUS_ADMIN_EMAIL}"
+      ADMIN_PASSWORD: "${DIRECTUS_ADMIN_PASSWORD}"
+      ADMIN_TOKEN: "${DIRECTUS_TOKEN}"
+    volumes:
+      - directus_uploads:/directus/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.9
+    environment:
+      MEILI_MASTER_KEY: "jkFkmlFGl3qALeO9hwWWxD7W6OsJmCAE"
+    ports:
+      - "7700:7700"
+    volumes:
+      - meili:/meili_data
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DIRECTUS_URL: "http://directus:8055"
+      DIRECTUS_TOKEN: "${DIRECTUS_TOKEN:-change-me-admin-token}"
+      MEILI_URL: "http://meilisearch:7700"
+      MEILI_API_KEY: "${MEILI_API_KEY:-change-me-meili-master-key}"
+      NEXT_PUBLIC_SITE_NAME: "${NEXT_PUBLIC_SITE_NAME:-DF-MDF MVP}"
+      DIRECTUS_INTERNAL_URL: "http://directus:8055"
+      NEXT_PUBLIC_DIRECTUS_URL: "http://localhost:8055"
+    depends_on:
+      - directus
+      - meilisearch
+
+  tools:
+    build: .
+    entrypoint: ["node"]
+    command: ["-e", "console.log('Use: docker compose run --rm tools scripts/bootstrap-directus.mjs')"]
+    environment:
+      DIRECTUS_URL: "http://directus:8055"
+      DIRECTUS_TOKEN: "${DIRECTUS_TOKEN:-change-me-admin-token}"
+      MEILI_URL: "http://meilisearch:7700"
+      MEILI_API_KEY: "${MEILI_API_KEY:-change-me-meili-master-key}"
+    depends_on:
+      - directus
+      - meilisearch
+
+volumes:
+  pgdata:
+  directus_uploads:
+  meili:

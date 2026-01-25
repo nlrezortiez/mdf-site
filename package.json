@@ -1,0 +1,21 @@
+{
+  "name": "df-mdf-mvp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint",
+    "bootstrap": "node scripts/bootstrap-directus.mjs",
+    "seed": "node scripts/seed.mjs",
+    "reindex": "node scripts/reindex.mjs"
+  },
+  "dependencies": {
+    "meilisearch": "^0.47.0",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
