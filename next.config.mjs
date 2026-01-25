@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Keep defaults; no special flags required for MVP.
+  images: {
+    localPatterns: [
+      // Directus assets proxy
+      { pathname: "/api/assets/**" },
+      // Mega menu icons from /public/menu/
+      { pathname: "/menu/**" }
+    ]
   }
 };
 

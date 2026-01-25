@@ -9,8 +9,6 @@ export async function POST(req) {
   const client = meiliClient();
   const index = client.index("catalog");
 
-  // Fetch by primary id list via filter.
-  // We store 'id' as e.g. 'film:12'. We'll query in chunks.
   const ids = keys.map((k) => String(k));
 
   const chunkSize = 40;

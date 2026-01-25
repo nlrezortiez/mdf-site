@@ -14,15 +14,16 @@ export default function HeaderSearch() {
   }
 
   return (
-    <form className="searchbar" onSubmit={onSubmit}>
+    <form className="headerSearch" onSubmit={onSubmit}>
+      <span className="headerSearchIcon" aria-hidden="true">⌕</span>
       <input
-        className="input"
+        className="headerSearchInput"
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Поиск по каталогу…"
+        placeholder=""
         aria-label="Поиск"
       />
-      <button className="button" type="submit">Найти</button>
+      <button className="headerSearchSubmit" type="submit" aria-label="Найти" />
     </form>
   );
 }

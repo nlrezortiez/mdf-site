@@ -9,13 +9,14 @@ function buildHref(kind, section, slug) {
   if (["news"].includes(kind)) return `/news/${slug}`;
   if (["solution"].includes(kind)) return `/solutions/${slug}`;
   if (["gallery"].includes(kind)) return `/gallery`;
-  // catalog kinds
   return `/catalog/${section}/${slug}`;
 }
 
 export default async function SearchPage({ searchParams }) {
-  const q = (searchParams?.q || "").toString();
-  const page = Math.max(1, parseInt(searchParams?.page || "1", 10) || 1);
+  const sp = await searchParams;
+
+  const q = (sp?.q || "").toString();
+  const page = Math.max(1, parseInt(sp?.page || "1", 10) || 1);
   const limit = 24;
   const offset = (page - 1) * limit;
 
@@ -24,19 +25,14 @@ export default async function SearchPage({ searchParams }) {
 
   let res = null;
   try {
-    res = await index.search(q, {
-      limit,
-      offset
-    });
+    res = await index.search(q, { limit, offset });
   } catch (e) {
     return (
       <div className="panel">
         <div className="kicker">Ошибка поиска</div>
-        <div style={{whiteSpace:"pre-wrap", color:"var(--muted)"}}>
-          {String(e?.message || e)}
-        </div>
-        <div style={{marginTop:12}}>
-          Проверьте, что Meilisearch запущен и индекс создан (npm run reindex).
+        <div style={{ whiteSpace: "pre-wrap", color: "var(--muted)" }}>{String(e?.message || e)}</div>
+        <div style={{ marginTop: 12 }}>
+          Проверьте, что Meilisearch запущен и индекс создан (docker compose run --rm tools scripts/reindex.mjs).
         </div>
       </div>
     );
@@ -48,11 +44,7 @@ export default async function SearchPage({ searchParams }) {
   const normalized = hits.map((h) => {
     const kindLabel = KIND_LABEL[h.kind] || h.kind;
     const href = buildHref(h.kind, h.section, h.slug);
-    return {
-      ...h,
-      kindLabel,
-      href
-    };
+    return { ...h, kindLabel, href };
   });
 
   const nextPage = offset + hits.length < total ? page + 1 : null;
@@ -64,29 +56,37 @@ export default async function SearchPage({ searchParams }) {
       <h1 className="h1">{q ? `Результаты по запросу: “${q}”` : "Поиск по каталогу и сайту"}</h1>
 
       <div className="panel">
-        <div className="small" style={{color:"var(--muted)"}}>
+        <div className="small" style={{ color: "var(--muted)" }}>
           Найдено: {total}
         </div>
       </div>
 
-      <div style={{height:14}} />
+      <div style={{ height: 14 }} />
 
       <div className="grid">
         {normalized.map((item) => (
           <ResultCard key={item.id} item={item} />
         ))}
         {normalized.length === 0 ? (
-          <div className="panel" style={{gridColumn:"1 / -1", color:"var(--muted)"}}>
+          <div className="panel" style={{ gridColumn: "1 / -1", color: "var(--muted)" }}>
             Ничего не найдено.
           </div>
         ) : null}
       </div>
 
-      <div style={{height:14}} />
+      <div style={{ height: 14 }} />
 
-      <div style={{display:"flex", gap:10, flexWrap:"wrap"}}>
-        {prevPage ? <a className="button" href={`/search?q=${encodeURIComponent(q)}&page=${prevPage}`}>Назад</a> : null}
-        {nextPage ? <a className="button" href={`/search?q=${encodeURIComponent(q)}&page=${nextPage}`}>Вперёд</a> : null}
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        {prevPage ? (
+          <a className="button" href={`/search?q=${encodeURIComponent(q)}&page=${prevPage}`}>
+            Назад
+          </a>
+        ) : null}
+        {nextPage ? (
+          <a className="button" href={`/search?q=${encodeURIComponent(q)}&page=${nextPage}`}>
+            Вперёд
+          </a>
+        ) : null}
       </div>
     </div>
   );

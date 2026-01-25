@@ -1,27 +1,47 @@
 import Link from "next/link";
 import { listItems } from "@/lib/directus";
+import SolutionCard from "@/components/SolutionCard";
 
 export const dynamic = "force-dynamic";
 
 export default async function SolutionsList() {
-  const json = await listItems("solutions", { limit: 50, page: 1, sort: "-id" }).catch(() => ({ data: [] }));
+  const json = await listItems("solutions", {
+    limit: 60,
+    page: 1,
+    sort: "-id",
+    filter: { is_published: { _neq: false } },
+    fields: [
+      "id",
+      "slug",
+      "title",
+      "film_pvc",
+      "milling",
+      "cover_image",
+      "cover_image.id"
+    ]
+  }).catch(() => ({ data: [] }));
+
   const items = json?.data || [];
 
   return (
     <div>
-      <div className="kicker">Готовые решения</div>
-      <h1 className="h1">Готовые решения</h1>
+      <div className="breadcrumbs">
+        <Link href="/">Главная</Link>
+        <span className="breadcrumbsSep">/</span>
+        <span>Готовые решения</span>
+      </div>
 
-      <div className="grid">
+      <h1 className="pageTitle">Готовые решения</h1>
+
+      <div className="solutionsGrid">
         {items.map((s) => (
-          <div key={s.id} className="card" style={{gridColumn:"span 6"}}>
-            <h3><Link href={`/solutions/${s.slug}`}>{s.title}</Link></h3>
-            {s.description ? <p>{s.description}</p> : <p style={{color:"var(--muted)"}}>Описание не задано.</p>}
-            <div style={{marginTop:12}}><Link className="button" href={`/solutions/${s.slug}`}>Открыть</Link></div>
-          </div>
+          <SolutionCard key={s.id} item={s} />
         ))}
+
         {items.length === 0 ? (
-          <div className="panel" style={{gridColumn:"1 / -1", color:"var(--muted)"}}>Пока нет решений (seed).</div>
+          <div className="panel" style={{ gridColumn: "1 / -1", color: "var(--muted)" }}>
+            Пока нет решений.
+          </div>
         ) : null}
       </div>
     </div>

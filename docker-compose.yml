@@ -18,7 +18,8 @@ services:
     ports:
       - "8055:8055"
     environment:
-      SECRET: "change-me-directus-secret"
+      KEY: "${DIRECTUS_KEY}"
+      SECRET: "${DIRECTUS_SECRET}"
       DB_CLIENT: "pg"
       DB_HOST: "db"
       DB_PORT: "5432"
