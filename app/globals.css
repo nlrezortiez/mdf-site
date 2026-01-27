@@ -1001,3 +1001,160 @@ a:hover {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+.breadcrumbs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin: 2px 0 18px;
+}
+
+.breadcrumbs a {
+    color: var(--muted);
+}
+
+.breadcrumbs a:hover {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.crumbSep {
+    color: rgba(0, 0, 0, 0.25);
+}
+
+.pageTitle {
+    font-size: 36px;
+    line-height: 1.15;
+    margin: 0 0 8px;
+    letter-spacing: -0.2px;
+}
+
+.favCountLine {
+    font-size: 13px;
+    color: #b40000;
+    margin-bottom: 18px;
+}
+
+.favSection {
+    margin-top: 18px;
+}
+
+.favSectionTitle {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 16px;
+    color: var(--text);
+}
+
+.favGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 240px);
+    gap: 28px 42px;
+    align-items: start;
+}
+
+.favTile {
+    width: 240px;
+}
+
+.favTileLink {
+    display: block;
+    text-decoration: none;
+}
+
+.favTileThumb {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.favTileImg {
+    object-fit: contain;
+    object-position: center;
+}
+
+.favTilePlaceholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(157, 180, 192, 0.22),
+        rgba(255, 255, 255, 0.7)
+    );
+}
+
+.favTileHeart {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+}
+
+.favTileStripe {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 6px;
+    width: 42px;
+    background: #b40000;
+    z-index: 2;
+}
+
+.heartBtn {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.92);
+    cursor: pointer;
+    padding: 0;
+    display: grid;
+    place-items: center;
+}
+
+.heartBtn svg {
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.55))
+        drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.heartBtn.isActive {
+    color: #b40000;
+}
+
+.heartBtn.isActive svg {
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
+        drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.favTileTitle {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.25;
+    color: #000;
+}
+
+.favTileMeta {
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(37, 50, 55, 0.75);
+    line-height: 1.35;
+}
+
+@media (max-width: 980px) {
+    .favGrid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 22px 22px;
+    }
+    .favTile {
+        width: auto;
+    }
+    .favTileThumb {
+        height: 260px;
+    }
+}

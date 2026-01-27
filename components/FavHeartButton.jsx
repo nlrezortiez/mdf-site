@@ -2,11 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-const LS_KEY = "favorites_v1";
-
 function readFavs() {
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    const raw = localStorage.getItem("favorites_v1");
     const arr = raw ? JSON.parse(raw) : [];
     return Array.isArray(arr) ? arr : [];
   } catch {
@@ -18,36 +16,37 @@ function uniq(arr) {
   const seen = new Set();
   const out = [];
   for (const x of arr) {
-    if (!x) continue;
-    if (seen.has(x)) continue;
-    seen.add(x);
-    out.push(x);
+    const s = String(x ?? "").trim();
+    if (!s) continue;
+    if (seen.has(s)) continue;
+    seen.add(s);
+    out.push(s);
   }
   return out;
 }
 
 function writeFavs(arr) {
-  localStorage.setItem(LS_KEY, JSON.stringify(uniq(arr)));
+  localStorage.setItem("favorites_v1", JSON.stringify(uniq(arr)));
   window.dispatchEvent(new Event("storage"));
 }
 
-export default function FavHeartButton({ docId, kind, slug, className = "" }) {
-  // приоритет: docId (реальный id в Meili). fallback: kind_slug
-  const key = useMemo(() => {
-    if (docId) return String(docId);
-    return `${kind}_${slug}`;
-  }, [docId, kind, slug]);
-
+export default function FavHeartButton({ docId, className = "" }) {
+  const key = useMemo(() => String(docId || ""), [docId]);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
+    if (!key) {
+      setActive(false);
+      return;
+    }
     const favs = readFavs();
     setActive(favs.includes(key));
   }, [key]);
 
   function toggle(e) {
-    e.preventDefault();
-    e.stopPropagation();
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    if (!key) return;
 
     const favs = readFavs();
     const next = favs.includes(key)
@@ -60,7 +59,7 @@ export default function FavHeartButton({ docId, kind, slug, className = "" }) {
   return (
     <button
       type="button"
-      className={`favHeart ${active ? "isActive" : ""} ${className}`}
+      className={`heartBtn ${active ? "isActive" : ""} ${className}`}
       aria-label={active ? "Убрать из избранного" : "Добавить в избранное"}
       aria-pressed={active}
       onClick={toggle}
