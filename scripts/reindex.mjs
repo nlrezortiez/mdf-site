@@ -4,7 +4,7 @@ import { authHeaders, httpJson, mustEnv, waitForHttpOk } from "./_shared.mjs";
 const DIRECTUS_URL = mustEnv("DIRECTUS_URL").replace(/\/$/, "");
 const DIRECTUS_TOKEN = mustEnv("DIRECTUS_TOKEN");
 
-const MEILI_URL = mustEnv("MEILI_URL");
+const MEILI_URL = mustEnv("MEILI_URL").replace(/\/$/, "");
 const MEILI_API_KEY = mustEnv("MEILI_API_KEY");
 
 const directusHeaders = authHeaders(DIRECTUS_TOKEN);
@@ -27,22 +27,77 @@ const BASE_FIELDS = [
   "is_published",
   "is_popular",
   "preview_image",
-  "preview_image.id"
+  "preview_image.id",
 ];
 
-// Ваш вариант (оставил без изменений)
 const COLLECTIONS = [
-  { collection: "product_types_items", kind: "product_type", section: "product-types", fields: [...BASE_FIELDS] },
-  { collection: "millings", kind: "milling", section: "millings", fields: [...BASE_FIELDS, "article"] },
-  { collection: "films", kind: "film", section: "films", fields: [...BASE_FIELDS, "article", "category"] },
-  { collection: "colors", kind: "color", section: "colors", fields: [...BASE_FIELDS, "article", "category", "hex_color"] },
-  { collection: "edges", kind: "edge", section: "edges", fields: [...BASE_FIELDS] },
-  { collection: "patinas", kind: "patina", section: "patinas", fields: [...BASE_FIELDS] },
-
-  { collection: "special_offers", kind: "offer", section: null, fields: [...BASE_FIELDS, "body", "date_from", "date_to", "published_at"] },
-  { collection: "news", kind: "news", section: null, fields: [...BASE_FIELDS, "body", "date_from", "date_to", "published_at"] },
-  { collection: "solutions", kind: "solution", section: null, fields: [...BASE_FIELDS] },
-  { collection: "gallery_items", kind: "gallery", section: null, fields: [...BASE_FIELDS] }
+  {
+    collection: "product_types_items",
+    kind: "product_type",
+    section: "product-types",
+    fields: [...BASE_FIELDS],
+  },
+  {
+    collection: "millings",
+    kind: "milling",
+    section: "millings",
+    fields: [...BASE_FIELDS, "article"],
+  },
+  {
+    collection: "films",
+    kind: "film",
+    section: "films",
+    fields: [...BASE_FIELDS, "article", "category"],
+  },
+  {
+    collection: "colors",
+    kind: "color",
+    section: "colors",
+    fields: [...BASE_FIELDS, "article", "category", "hex_color"],
+  },
+  {
+    collection: "edges",
+    kind: "edge",
+    section: "edges",
+    fields: [...BASE_FIELDS],
+  },
+  {
+    collection: "patinas",
+    kind: "patina",
+    section: "patinas",
+    fields: [...BASE_FIELDS],
+  },
+  {
+    collection: "special_offers",
+    kind: "offer",
+    section: null,
+    fields: [...BASE_FIELDS, "body", "date_from", "date_to", "published_at"],
+  },
+  {
+    collection: "news",
+    kind: "news",
+    section: null,
+    fields: [
+      ...BASE_FIELDS,
+      "body",
+      "excerpt",
+      "date_from",
+      "date_to",
+      "published_at",
+    ],
+  },
+  {
+    collection: "solutions",
+    kind: "solution",
+    section: null,
+    fields: [...BASE_FIELDS],
+  },
+  {
+    collection: "gallery_items",
+    kind: "gallery",
+    section: null,
+    fields: [...BASE_FIELDS],
+  },
 ];
 
 async function listAll(collection, fields) {
@@ -51,12 +106,18 @@ async function listAll(collection, fields) {
   const out = [];
 
   while (true) {
-    const qs = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+    const qs = new URLSearchParams({
+      limit: String(limit),
+      offset: String(offset),
+    });
     for (const f of fields) qs.append("fields[]", f);
 
-    const json = await httpJson(`${DIRECTUS_URL}/items/${collection}?${qs.toString()}`, {
-      headers: directusHeaders
-    });
+    const json = await httpJson(
+      `${DIRECTUS_URL}/items/${collection}?${qs.toString()}`,
+      {
+        headers: directusHeaders,
+      },
+    );
 
     const data = json?.data || [];
     out.push(...data);
@@ -68,25 +129,18 @@ async function listAll(collection, fields) {
   return out;
 }
 
-function safeStr(x) {
-  if (x === undefined || x === null) return "";
-  if (typeof x === "string") return x;
-  if (typeof x === "number" || typeof x === "boolean") return String(x);
-  // на случай если body приходит объектом (редко), не ломаем индекс
-  try {
-    return JSON.stringify(x);
-  } catch {
-    return "";
-  }
+function makeDocId(kind, slug) {
+  // Meilisearch id: only [a-zA-Z0-9_-]
+  // slug обычно уже safe, kind тоже; разделитель "_"
+  return `${kind}_${slug}`;
 }
 
 function toDoc(meta, item) {
   const { kind, section } = meta;
 
-  if (!item?.id || !item?.slug || !item?.title) return null;
+  if (!item?.slug || !item?.title) return null;
 
-  // Meili doc id: only [A-Za-z0-9_-] => используем UUID/число и underscore
-  const id = `${kind}_${String(item.id)}`;
+  const id = makeDocId(kind, item.slug);
 
   const subtitleParts = [];
   if (item.article) subtitleParts.push(item.article);
@@ -101,13 +155,7 @@ function toDoc(meta, item) {
     item.short_description,
     item.description,
     item.warning_text,
-    item.body,
-    item.hex_color,
-    item.date_from,
-    item.date_to,
-    item.published_at
   ]
-    .map(safeStr)
     .filter(Boolean)
     .join(" ");
 
@@ -121,8 +169,13 @@ function toDoc(meta, item) {
     preview_image: normalizeFileId(item.preview_image),
     searchable_text: searchable,
     is_published: item.is_published !== false,
-    is_popular: !!item.is_popular
+    is_popular: !!item.is_popular,
   };
+}
+
+async function waitTask(task) {
+  if (!task?.taskUid) return;
+  await client.waitForTask(task.taskUid);
 }
 
 async function ensureIndex() {
@@ -135,21 +188,41 @@ async function ensureIndex() {
   }
 
   const index = client.index(indexName);
-  await index.updateSearchableAttributes(["title", "subtitle", "searchable_text"]);
-  await index.updateFilterableAttributes(["kind", "section", "is_published"]);
-  await index.updateSortableAttributes(["is_popular"]);
+
+  await waitTask(
+    await index.updateSearchableAttributes([
+      "title",
+      "subtitle",
+      "searchable_text",
+    ]),
+  );
+
+  // ВАЖНО: добавили "id" — иначе /api/favorites с filter "id IN [...]" падает
+  await waitTask(
+    await index.updateFilterableAttributes([
+      "id",
+      "kind",
+      "section",
+      "is_published",
+    ]),
+  );
+
+  await waitTask(await index.updateSortableAttributes(["is_popular"]));
+
   return index;
 }
 
 async function main() {
   await waitForHttpOk(`${DIRECTUS_URL}/server/health`);
-  await waitForHttpOk(`${MEILI_URL.replace(/\/$/, "")}/health`);
+  await waitForHttpOk(`${MEILI_URL}/health`);
 
   const index = await ensureIndex();
 
   const docs = [];
+
   for (const c of COLLECTIONS) {
     const items = await listAll(c.collection, c.fields);
+
     for (const it of items) {
       if (it.is_published === false) continue;
       const doc = toDoc(c, it);
@@ -160,10 +233,16 @@ async function main() {
   const task = await index.addDocuments(docs);
   console.log("[MEILI] addDocuments task:", task);
 
-  const done = await index.waitForTask(task.taskUid);
-  console.log("[MEILI] task result:", done);
+  await waitTask(task);
 
-  console.log(`[MEILI] docs sent: ${docs.length}`);
+  const done = await client.getTask(task.taskUid);
+  console.log("[MEILI] task status:", done?.status);
+  if (done?.status === "failed") {
+    console.error("[MEILI] task error:", done?.error);
+    process.exit(1);
+  }
+
+  console.log(`[MEILI] indexed docs: ${docs.length}`);
   console.log("Reindex complete.");
 }
 
