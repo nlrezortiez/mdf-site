@@ -1,14 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import CatalogMegaMenu from "@/components/CatalogMegaMenu";
 
 export default function HeaderCatalog() {
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
+  const closeT = useRef(null);
 
-  // Закрывать при клике вне
+  function cancelClose() {
+    if (closeT.current) clearTimeout(closeT.current);
+    closeT.current = null;
+  }
+
+  function scheduleClose() {
+    cancelClose();
+    closeT.current = setTimeout(() => setOpen(false), 120);
+  }
+
   useEffect(() => {
     function onDoc(e) {
       if (!rootRef.current) return;
@@ -18,7 +27,6 @@ export default function HeaderCatalog() {
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  // Esc закрывает
   useEffect(() => {
     function onKey(e) {
       if (e.key === "Escape") setOpen(false);
@@ -28,22 +36,38 @@ export default function HeaderCatalog() {
   }, []);
 
   return (
-    <div
-      className="headerCatalog"
-      ref={rootRef}
-      onMouseEnter={() => setOpen(true)}
-    >
+    <div className="headerCatalog" ref={rootRef}>
       <button
         type="button"
         className={`headerCatalogBtn ${open ? "isOpen" : ""}`}
-        onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
+        onMouseEnter={() => {
+          cancelClose();
+          setOpen(true);
+        }}
+        onMouseLeave={() => {
+          scheduleClose();
+        }}
+        onClick={() => setOpen((v) => !v)}
       >
-        Каталог
+        Каталог{" "}
+        <span className="headerCatalogCaret" aria-hidden="true">
+          ▾
+        </span>
       </button>
 
-      <CatalogMegaMenu open={open} onClose={() => setOpen(false)} />
+      <CatalogMegaMenu
+        open={open}
+        onClose={() => setOpen(false)}
+        onPanelEnter={() => {
+          cancelClose();
+          setOpen(true);
+        }}
+        onPanelLeave={() => {
+          scheduleClose();
+        }}
+      />
     </div>
   );
 }
