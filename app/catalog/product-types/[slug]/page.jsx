@@ -118,13 +118,14 @@ export default async function ProductTypeDetail({ params }) {
           {tech ? (
             <div className="ptTechBlock">
               <div className="ptTechTitle">Технология (в разрезе)</div>
-              <div className="ptTechImgWrap">
+
+              <div className="ptTechImgWrap ptTechImgWrapSmall">
                 <Image
                   src={tech}
-                  alt="Технология (в разрезе)"
-                  width={900}
-                  height={260}
-                  className="ptTechImg"
+                  alt="Технология в разрезе"
+                  width={320}
+                  height={120}
+                  className="ptTechImgSmall"
                 />
               </div>
             </div>

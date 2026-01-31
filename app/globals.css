@@ -1158,3 +1158,701 @@ a:hover {
         height: 260px;
     }
 }
+
+.ptTechBlock {
+    margin-top: 14px;
+}
+
+.ptTechTitle {
+    font-weight: 700;
+    color: rgba(37, 50, 55, 0.85);
+    margin-bottom: 8px;
+}
+
+.ptTechImgWrap {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 6px 8px;
+}
+
+.ptTechImgWrapSmall {
+    max-width: 320px;
+}
+
+.ptTechImgSmall {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.decorCard {
+    min-width: 0;
+}
+
+.decorCardLink {
+    display: block;
+    text-decoration: none;
+}
+
+.decorImgFrame {
+    position: relative;
+    height: 140px; /* ключевое: “воздух” как в референсе */
+    background: transparent; /* у декора обычно прозрачный фон */
+    overflow: visible;
+}
+
+.decorImg {
+    object-fit: contain;
+    object-position: center;
+}
+
+.decorImgPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(157, 180, 192, 0.12),
+        rgba(255, 255, 255, 0.9)
+    );
+}
+
+.decorFav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.decorTitle {
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 10px;
+    color: #000;
+    line-height: 1.25;
+}
+
+.decorMeta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(37, 50, 55, 0.75);
+    line-height: 1.35;
+}
+
+.decorMetaLabel {
+    font-size: 11px;
+    color: rgba(37, 50, 55, 0.65);
+}
+
+.decorMetaValue {
+    margin-top: 2px;
+}
+
+.decorH1 {
+    font-size: 44px;
+    line-height: 1.1;
+    margin: 18px 0 26px;
+    letter-spacing: -0.3px;
+}
+
+.decorDetailLayout {
+    display: grid;
+    grid-template-columns: 360px 1fr 520px;
+    gap: 56px;
+    align-items: start;
+}
+
+.decorHeroFrame {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: transparent;
+}
+
+.decorHeroImg {
+    object-fit: contain;
+    object-position: left center;
+}
+
+.decorHeroPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.decorFav {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 2;
+}
+
+.decorInfoRow {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 15px;
+}
+
+.decorInfoLabel {
+    font-weight: 700;
+}
+
+.decorInfoValue {
+    color: rgba(37, 50, 55, 0.9);
+}
+
+.decorWarnBox {
+    margin-top: 18px;
+    border: 1px solid #b40000;
+    padding: 14px 16px;
+    width: fit-content;
+    max-width: 360px;
+    text-align: center;
+    color: #b40000;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.decorWarnIcon {
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.decorProfileBlock {
+    margin-top: 26px;
+}
+
+.decorProfileTitle {
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.decorProfileImgWrap {
+    width: 420px;
+    max-width: 100%;
+}
+
+.decorProfileImg {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.decorDesc {
+    margin-top: 24px;
+    max-width: 520px;
+    white-space: pre-wrap;
+    color: rgba(37, 50, 55, 0.8);
+    line-height: 1.5;
+}
+
+/* Right column recommendations */
+.decorRecoTitle {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0 0 18px;
+}
+
+.decorRecoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px 24px;
+}
+
+.decorRecoCard {
+    text-decoration: none;
+    display: block;
+    min-width: 0;
+}
+
+.decorRecoCard.isWide {
+    grid-column: 1 / -1;
+}
+
+.decorRecoImgBox {
+    position: relative;
+    height: 160px;
+    background: rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.decorRecoImg {
+    object-fit: contain;
+    object-position: center;
+}
+
+.decorRecoImgPh {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.decorRecoImgBadge {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.65);
+}
+
+.decorRecoText {
+    padding-top: 10px;
+}
+
+.decorRecoName {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.25;
+    color: #000;
+}
+
+.decorRecoLine {
+    margin: 12px 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.decorRecoCat {
+    color: rgba(37, 50, 55, 0.85);
+    line-height: 1.35;
+}
+
+.decorRecoCatLabel {
+    font-weight: 800;
+    margin-right: 6px;
+}
+
+@media (max-width: 1200px) {
+    .decorDetailLayout {
+        grid-template-columns: 320px 1fr;
+        grid-template-areas:
+            "left mid"
+            "right right";
+    }
+    .decorLeft {
+        grid-area: left;
+    }
+    .decorMid {
+        grid-area: mid;
+    }
+    .decorRight {
+        grid-area: right;
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 900px) {
+    .decorDetailLayout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .decorRecoGrid {
+        grid-template-columns: 1fr;
+    }
+    .decorRecoCard.isWide {
+        grid-column: auto;
+    }
+}
+
+.ptCheck input[type="radio"] {
+    border-radius: 999px;
+}
+
+.millingCard {
+    min-width: 0;
+}
+.millingCardLink {
+    display: block;
+    text-decoration: none;
+}
+
+.millingImgFrame {
+    position: relative;
+    height: 210px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.millingImg {
+    object-fit: cover;
+    object-position: center;
+}
+
+.millingImgPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.millingFav {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 2;
+}
+
+.millingTitle {
+    font-size: 12px;
+    font-weight: 900;
+    margin-top: 10px;
+    color: #000;
+    line-height: 1.25;
+}
+
+.millingLine {
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(37, 50, 55, 0.85);
+    line-height: 1.35;
+}
+
+.millingLineLabel {
+    font-weight: 800;
+}
+
+/* detail layout */
+.millingDetailLayout {
+    display: grid;
+    grid-template-columns: 360px 1fr 520px;
+    gap: 56px;
+    align-items: start;
+}
+
+.millingHeroFrame {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: transparent;
+}
+
+.millingHeroImg {
+    object-fit: contain;
+    object-position: left center;
+}
+.millingHeroPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.millingRecoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px 24px;
+}
+
+.millingRecoCard {
+    text-decoration: none;
+    display: block;
+    min-width: 0;
+}
+.millingRecoCard.isWide {
+    grid-column: 1 / -1;
+}
+
+.millingRecoImgBox {
+    position: relative;
+    height: 160px;
+    background: rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.millingRecoImg {
+    object-fit: contain;
+    object-position: center;
+}
+.millingRecoImgPh {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.millingRecoText {
+    padding-top: 10px;
+}
+.millingRecoName {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.25;
+    color: #000;
+}
+
+.millingRecoLine {
+    margin: 12px 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.millingRecoMeta {
+    color: rgba(37, 50, 55, 0.85);
+    line-height: 1.35;
+}
+.millingRecoMetaLabel {
+    font-weight: 800;
+    margin-right: 6px;
+}
+
+@media (max-width: 1200px) {
+    .millingDetailLayout {
+        grid-template-columns: 320px 1fr;
+        grid-template-areas:
+            "left mid"
+            "right right";
+    }
+    .millingLeft {
+        grid-area: left;
+    }
+    .millingMid {
+        grid-area: mid;
+    }
+    .millingRight {
+        grid-area: right;
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 900px) {
+    .millingDetailLayout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .millingRecoGrid {
+        grid-template-columns: 1fr;
+    }
+    .millingRecoCard.isWide {
+        grid-column: auto;
+    }
+}
+
+.millingDetailGrid {
+    display: grid;
+    grid-template-columns: 320px 1fr 520px;
+    gap: 28px;
+    align-items: start;
+}
+
+.millingHeroFrame {
+    position: relative;
+    height: 360px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.millingHeroImg {
+    object-fit: contain;
+    object-position: center;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.millingHeroPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.millingFav {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+}
+
+.millingMid {
+    min-width: 0;
+}
+
+.millingWarnBox {
+    margin: 12px 0 10px;
+    border: 1px solid var(--brand-red);
+    color: var(--brand-red);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 12px 14px;
+    max-width: 360px;
+    text-align: center;
+}
+
+.millingProfileBlock {
+    margin-top: 14px;
+}
+
+.millingProfileTitle {
+    font-weight: 800;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.millingProfileWrap {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 8px;
+    max-width: 340px;
+}
+
+.millingProfileImg {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.millingThicknessBlock {
+    margin-top: 12px;
+}
+
+.millingThicknessTitle {
+    font-weight: 800;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.millingThicknessChips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.millingChip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    padding: 7px 10px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    min-width: 86px;
+}
+
+.millingDesc {
+    margin-top: 14px;
+    color: rgba(37, 50, 55, 0.78);
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    max-width: 560px;
+}
+
+.millingRight {
+    min-width: 0;
+}
+
+.millingSamplesTitle {
+    font-weight: 900;
+    font-size: 18px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+.millingSamplesList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.millingSampleBlock {
+    padding-bottom: 8px;
+}
+
+.millingSampleRow {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+    align-items: start;
+}
+
+.millingSampleMainWrap {
+    position: relative;
+    height: 280px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.millingSampleMainImg {
+    object-fit: contain;
+}
+
+.millingSamplePlaceholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.millingSampleThumbs {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.millingSampleThumbBtn {
+    position: relative;
+    width: 74px;
+    height: 74px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    background: #fff;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.millingSampleThumbBtn.isActive {
+    border-color: var(--brand-red);
+}
+
+.millingSampleThumbImg {
+    object-fit: cover;
+}
+
+.millingSampleMetaTitle {
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.millingSampleMetaLine {
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.millingSampleMetaLabel {
+    font-weight: 800;
+}
+
+.millingAccent {
+    color: var(--brand-red);
+    font-weight: 800;
+}
+
+@media (max-width: 1200px) {
+    .millingDetailGrid {
+        grid-template-columns: 320px 1fr;
+    }
+    .millingRight {
+        grid-column: 1 / -1;
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: 760px) {
+    .millingDetailGrid {
+        grid-template-columns: 1fr;
+    }
+    .millingHeroFrame {
+        height: 320px;
+    }
+    .millingSampleRow {
+        grid-template-columns: 1fr;
+    }
+    .millingSampleMainWrap {
+        height: 320px;
+    }
+}
